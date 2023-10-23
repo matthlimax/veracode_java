@@ -7,15 +7,6 @@ on:
 
 jobs:
 
-name: Veracode Scan 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-
   build:
     name: Build Maven
     runs-on: ubuntu-latest #executa o job dentro de uma maquina ubuntu
