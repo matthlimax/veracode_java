@@ -15,7 +15,8 @@ on:
     branches: [ main ]
 
 jobs:
- build:
+
+  build:
     name: Build Maven
     runs-on: ubuntu-latest #executa o job dentro de uma maquina ubuntu
     steps:
