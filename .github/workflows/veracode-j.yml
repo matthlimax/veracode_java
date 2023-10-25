@@ -38,7 +38,7 @@ jobs:
       - name: scan 
         run: |
           zip -r target/verademo.war . -x "*node_modules" "*.git" -i "*.js"  "*.html"  "*.htm"  "*.ts"  "*.tsx"  "*.json"  "*.css"  "*.jsp"  "*.vue"
-          java -jar /opt/veracode/api-wrapper.jar -vid "${{ secrets.VERACODE_ID }}" -vkey "${{ secrets.VERACODE_KEY }}" -action UploadAndScan -createprofile false -appname "verademo java.matheus" -version "${{ github.run_id }}" -filepath target/verademo.war
+          java -jar /opt/veracode/api-wrapper.jar -vid "${{ VERACODE_API_ID }}" -vkey "${{ VERACODE_API_KEY }}" -action UploadAndScan -createprofile false -appname "verademo java.matheus" -version "${{ github.run_id }}" -filepath target/verademo.war
 
   Veracode-SAST-Pipeline-Scan:
     runs-on: ubuntu-latest
