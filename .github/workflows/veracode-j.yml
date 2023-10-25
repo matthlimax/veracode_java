@@ -9,24 +9,23 @@ jobs:
 
   build:
     name: Build Maven
-    runs-on: ubuntu-latest #executa o job dentro de uma maquina ubuntu
+    runs-on: ubuntu-latest 
     steps:
-    - uses: actions/checkout@v1 # puxa os arquivos do repositório para a máquina
+    - uses: actions/checkout@v1
     - name: Set up JDK 1.8
-      uses: actions/setup-java@v1 # utiliza pulgin do java
+      uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Maven # realiza o comando Maven para build da app
+    - name: Build with Maven
       run: |
         mvn clean package install
         pwd
         ls -l  
-      # salva o verademo.war para ser usado no Policy Scan e Pipeline Scan
     - name: Salvando artefato
       uses: actions/upload-artifact@v3
       with:
-          name: verademo.war
-          path: target/verademo.war
+        name: verademo.war
+        path: target/verademo.war
 
   Veracode-SAST-Policy-Scan:
     runs-on: ubuntu-latest
@@ -61,16 +60,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        # define as variaveis ambiente com valores para os relatórios do SCA
-        # Baixa o script SCA para executar o scan
       - name: Run SCA Scan
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
         run: |
           export SRCCLR_SCM_URI="https://github.com/matthlimax/verademo-java-web.git"
-          export SRCCLR_SCM_REF=${{ github.workflow }}
-          export SRCCLR_SCM_REF_TYPE="branch"
-          export SRCCLR_SCM_REV=${{ github.run_id }}
-          
-          export EXTRA_ARGS='--update-advisor --uri-as-name'
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan $EXTRA_ARGS
