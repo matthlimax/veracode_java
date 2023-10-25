@@ -76,4 +76,4 @@ jobs:
 
       - name: Executar a varredura do SourceClear
         run: |
-          result=$(curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor --uri-as-name --allow-dirty)
+          result=$(curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor --uri-as-name --allow-dirty) || false -criticality VeryHigh
