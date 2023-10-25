@@ -37,7 +37,7 @@ jobs:
         uses: actions/download-artifact@v3 # realiza o download do verademo.war
         with:
           name: verademo.war
-          path: .
+          path: target/verademo.war
       - name: Veracode Policy Scan
         uses: veracode/veracode-uploadandscan-action@0.2.4 # usa o plugin oficial da veracode para executar o scan
         with:
@@ -73,3 +73,14 @@ jobs:
         run: |
           export SRCCLR_SCM_URI="https://github.com/matthlimax/verademo-java-web.git"
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan $EXTRA_ARGS
+
+      - name: Executar a varredura do SourceClear
+        run: |
+          result=$(curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor --uri-as-name --allow-dirty)
+
+        if [[ $result == *"Vulnerabilities found"* ]]; then
+          echo "Vulnerabilidades encontradas no SCA. A esteira será interrompida."
+          exit 1
+        else
+          echo "Nenhuma vulnerabilidade encontrada no SCA. A esteira continuará."
+        fi
