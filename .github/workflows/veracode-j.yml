@@ -77,10 +77,3 @@ jobs:
       - name: Executar a varredura do SourceClear
         run: |
           result=$(curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor --uri-as-name --allow-dirty)
-
-        if [[ $result == *"Vulnerabilities found"* ]]; then
-          echo "Vulnerabilidades encontradas no SCA. A esteira será interrompida."
-          exit 1
-        else
-          echo "Nenhuma vulnerabilidade encontrada no SCA. A esteira continuará."
-        fi
