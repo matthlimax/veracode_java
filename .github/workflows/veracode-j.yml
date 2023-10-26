@@ -44,8 +44,8 @@ jobs:
           appname: 'verademo java.matheus' # nome do perfil cadastrado na Veracode
           createprofile: true # nao cria um perfil novo
           filepath: 'target/verademo.war' # busca pelo artefato buildado para subir para o scan
-          vid: '${{ VERACODE_API_ID }}' # credencial api
-          vkey: '${{ VERACODE_API_KEY }}' # credencial api
+          vid: '${{ secrets.VERACODE_API_ID }}' # credencial api
+          vkey: '${{ secrets.VERACODE_API_KEY }}' # credencial api
           deleteincompletescan: 2     # se tiver um scan travado ele apaga e inicia um novo
 
   Veracode-SAST-Pipeline-Scan:
@@ -59,7 +59,7 @@ jobs:
           
       - name: scan 
         run: |
-          java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f target/verademo.war --fail_on_severity="Very High, High"
+          java -jar pipeline-scan.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -f target/verademo.war --fail_on_severity="Very High, High"
 
   Veracode_Software_Composition_Analisys:
     runs-on: ubuntu-latest
@@ -72,8 +72,4 @@ jobs:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
         run: |
           export SRCCLR_SCM_URI="https://github.com/matthlimax/verademo-java-web.git"
-          curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan $EXTRA_ARGS
-
-      - name: Executar a varredura do SourceClear
-        run: |
-          result=$(curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor --uri-as-name --allow-dirty) || false -criticality VeryHigh
+          curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --update-advisor --uri-as-name
