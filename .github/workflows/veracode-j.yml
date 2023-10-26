@@ -59,7 +59,7 @@ jobs:
           
       - name: scan 
         run: |
-          - java -jar /opt/veracode/pipeline-scan.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -f target/verademo.war --fail_on_severity="Very High, High"
+          java -jar /opt/veracode/pipeline-scan.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -f target/verademo.war --fail_on_severity="Very High, High"
 
   Veracode_Software_Composition_Analisys:
     runs-on: ubuntu-latest
