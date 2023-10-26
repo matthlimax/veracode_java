@@ -33,7 +33,10 @@ jobs:
     needs: [build] # executa apenas após o job do build concluir
     steps:
       - uses: actions/checkout@v2
-      - name: get archive
+      - name: Remove existing file
+        run: rm -f /home/runner/work/verademo-java-web/verademo-java-web/target/verademo.war
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
           name: verademo.war
           path: target/verademo.war
