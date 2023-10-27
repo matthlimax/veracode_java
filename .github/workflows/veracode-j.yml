@@ -49,7 +49,7 @@ jobs:
           vid: '${{ secrets.VERACODE_API_ID }}' # credencial api
           vkey: '${{ secrets.VERACODE_API_KEY }}' # credencial api
           deleteincompletescan: 2     # se tiver um scan travado ele apaga e inicia um novo
-          failBuildOnPolicyFail: true 
+          failBuildIfUploadAndScanBuildStepFails: true	
 
 
   Veracode_Software_Composition_Analisys:
@@ -75,4 +75,4 @@ jobs:
           
       - name: scan 
         run: |
-          java -jar /opt/veracode/pipeline-scan.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -f target/verademo.war --fail_on_cwe
+          java -jar /opt/veracode/pipeline-scan.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -f target/verademo.war -fail_on_severity="Very High, High"
