@@ -26,3 +26,27 @@ jobs:
       with:
         name: verademo.war
         path: target/verademo.war
+
+  Veracode_Policy_Scan:
+    name: Veracode Policy Scan
+    runs-on: ubuntu-latest
+    needs: [build] # executa apenas após o job do build concluir
+    steps:
+      - uses: actions/checkout@v2
+      - name: Remove existing file
+        run: rm -f /home/runner/work/verademo-java-web/verademo-java-web/target/verademo.war
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: verademo.war
+          path: target/verademo.war
+      - name: Veracode Policy Scan
+        uses: veracode/veracode-uploadandscan-action@0.2.4 # usa o plugin oficial da veracode para executar o scan
+        with:
+          appname: 'verademo java.matheus' # nome do perfil cadastrado na Veracode
+          createprofile: true # nao cria um perfil novo
+          filepath: 'target/verademo.war' # busca pelo artefato buildado para subir para o scan
+          vid: '${{ secrets.VERACODE_API_ID }}' # credencial api
+          vkey: '${{ secrets.VERACODE_API_KEY }}' # credencial api
+          deleteincompletescan: 2     # se tiver um scan travado ele apaga e inicia um novo
+          args: failBuildIfUploadAndScanBuildStepFails = "true"
