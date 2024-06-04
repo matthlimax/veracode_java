@@ -44,7 +44,7 @@ jobs:
         uses: veracode/veracode-uploadandscan-action@0.2.4 # usa o plugin oficial da veracode para executar o scan
         with:
           appname: 'verademo java.matheus' # nome do perfil cadastrado na Veracode
-          createprofile: true # nao cria um perfil novo
+          createprofile: false # nao cria um perfil novo
           filepath: 'target/verademo.war' # busca pelo artefato buildado para subir para o scan
           vid: '${{ secrets.VID }}' # credencial api
           vkey: '${{ secrets.VKEY }}' # credencial api
