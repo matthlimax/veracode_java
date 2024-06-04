@@ -46,7 +46,7 @@ jobs:
           appname: 'verademo java.matheus' # nome do perfil cadastrado na Veracode
           createprofile: true # nao cria um perfil novo
           filepath: 'target/verademo.war' # busca pelo artefato buildado para subir para o scan
-          vid: '${{ secrets.VERACODE_API_ID }}' # credencial api
-          vkey: '${{ secrets.VERACODE_API_KEY }}' # credencial api
+          vid: '${{ secrets.VID }}' # credencial api
+          vkey: '${{ secrets.VKEY }}' # credencial api
           deleteincompletescan: 2     # se tiver um scan travado ele apaga e inicia um novo
           args: failBuildIfUploadAndScanBuildStepFails = "true"
