@@ -30,7 +30,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-pipeline-scan:
+  pipelinescan:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 1.8
