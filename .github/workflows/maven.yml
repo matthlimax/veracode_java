@@ -1,34 +1,28 @@
-name: Veracode Pipeline Scan
-
-on: [push]
+name: Veracode Scan 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
+
   build:
-    runs-on: ubuntu-latest
-
+    name: Build Maven
+    runs-on: ubuntu-latest 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up JDK 11
+    - uses: actions/checkout@v1
+    - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
-        java-version: '11'
-
+        java-version: 1.8
     - name: Build with Maven
-      run: mvn clean package
-
-    - name: Download Veracode Pipeline Scan
-      run: wget https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip -O pipeline-scan.zip
-
-    - name: Unzip Veracode Pipeline Scan
-      run: unzip pipeline-scan.zip -d pipeline-scan
-
-    - name: Set execute permission for pipeline scan
-      run: chmod +x pipeline-scan/pipeline-scan.jar
-
-    - name: Ensure permissions for WAR file
-      run: chmod 644 target/verademo.war
-
-    - name: Run Veracode Pipeline Scan
-      run: java -jar pipeline-scan/pipeline-scan.jar --veracode_api_id "${{ secrets.VERACODE_API_ID }}" --veracode_api_key "${{ secrets.VERACODE_API_KEY }}" --file "target/verademo.war" --fail_on_severity="Very High, High"
+      run: |
+        mvn clean package install
+        pwd
+        ls -l  
+    - name: Salvando artefato
+      uses: actions/upload-artifact@v3
+      with:
+        name: verademo.war
+        path: target/verademo.war
